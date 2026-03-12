@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>User Health Details</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Poppins',sans-serif;
+background-image:url("/static/images/food-pattern.png");
+background-size:600px;
+background-position:center;
+background-repeat:repeat;
+background-color:#0f172a;
+
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* dark overlay */
+
+body::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.65);
+z-index:0;
+}
+
+.health-card{
+background:#0f172a;
+color:white;
+width:420px;
+padding:35px;
+border-radius:18px;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
+position:relative;
+z-index:10;
+}
+
+/* title */
+
+.health-card h1{
+text-align:center;
+margin-bottom:25px;
+}
+
+/* labels */
+
+label{
+font-weight:600;
+}
+
+/* inputs */
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border-radius:8px;
+border:1px solid #374151;
+background:#1f2937;
+color:white;
+}
+
+/* button */
+
+button{
+width:100%;
+padding:14px;
+background:#0fc1d985;
+border:none;
+border-radius:10px;
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+}
+
+button:hover{
+background:#a4cf07;
+}
+
+label i{
+margin-right:8px;
+color:#ba22c5;
+}
+
+.food{
+position:absolute;
+width:60px;
+opacity:0.25;
+animation:float 6s ease-in-out infinite;
+}
+
+/* positions */
+
+.food1{top:10%;left:8%;}
+.food2{top:20%;right:10%;}
+.food3{bottom:15%;left:12%;}
+.food4{bottom:20%;right:15%;}
+.food5{top:60%;left:5%;}
+.food6{top:40%;right:5%;}
+.food7{bottom:10%;left:40%;}
+.food8{top:10%;right:40%;}
+
+/* floating animation */
+
+@keyframes float{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0px);}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="health-card">
+
+<h1>User Health Details</h1>
+
+<form action="/food" method="get">
+
+<label><i class="fa-solid fa-user"></i> Age</label>
+<input type="number" name="age" required>
+
+<label><i class="fa-solid fa-weight-scale"></i> Weight (kg)</label>
+<input type="number" name="weight" step="any" required>
+
+<label><i class="fa-solid fa-ruler-vertical"></i> Height (ft)</label>
+<input type="number" name="height" step="any" required>
+
+<label><i class="fa-solid fa-heart-pulse"></i> Disease</label>
+<select name="disease">
+
+<option value="none">None</option>
+<option value="diabetes">Diabetes</option>
+<option value="bp">Blood Pressure</option>
+
+</select>
+
+<button type="submit">
+<i class="fa-solid fa-chart-line"></i> Analyze Health
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

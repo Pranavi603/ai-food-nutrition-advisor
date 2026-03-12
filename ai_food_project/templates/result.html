@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nutrition Result</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#74ebd5,#ACB6E5);
+text-align:center;
+margin:0;
+}
+
+.card{
+background:white;
+width:60%;
+margin:20px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0px 5px 20px rgba(0,0,0,0.2);
+}
+
+img{
+border-radius:10px;
+box-shadow:0px 4px 10px rgba(0,0,0,0.3);
+}
+
+button{
+padding:12px 25px;
+background:
+{% if health_score > 80 %}green
+{% elif health_score > 50 %}orange
+{% else %}red
+{% endif %};
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#1e8449;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Nutrition Analysis Result</h1>
+<div class="card">
+<h2>Uploaded Food Image</h2>
+
+{% if image_path %}
+<img src="/{{image_path}}" width="300">
+{% endif %}
+</div>
+<h2>Food Entered</h2>
+
+<p>{{food1}} : {{qty1}} g</p>
+<p>{{food2}} : {{qty2}} g</p>
+<p>{{food3}} : {{qty3}} g</p>
+
+<hr>
+<div class="card"></div>
+<h2>Nutritional Values</h2>
+
+<p>Calories: {{calories}}</p>
+<p>Protein: {{protein}}</p>
+<p>Carbohydrates: {{carbs}}</p>
+<p>Fats: {{fats}}</p>
+<p>Sugar: {{sugar}}</p>
+<p>Fiber: {{fiber}}</p>
+</div>
+<hr>
+
+<div class="card"></div>
+<h2>Health Advice</h2>
+
+<p>{{advice}}</p>
+</div>
+<hr>
+<div class="card"></div>
+
+<h2>AI Health Score</h2>
+
+<div style="width:300px;margin:auto;background:#ddd;border-radius:20px;">
+    
+    <div style="
+    width: {{health_score}}%;
+    background:#27ae60;
+    padding:10px;
+    border-radius:20px;
+    color:white;
+    font-weight:bold;">
+    
+    {{health_score}} / 100
+    
+    </div>
+
+</div>
+
+</div>
+
+<hr>
+<div class="card"></div>
+
+<h2>Nutrition Chart</h2>
+
+<canvas id="nutritionChart" width="400" height="300"></canvas>
+</div>
+
+<script>
+
+const protein = {{protein}};
+const carbs = {{carbs}};
+const fats = {{fats}};
+const sugar = {{sugar}};
+const fiber = {{fiber}};
+
+const ctx = document.getElementById("nutritionChart").getContext("2d");
+
+new Chart(ctx,{
+type:"bar",
+data:{
+labels:["Protein","Carbs","Fats","Sugar","Fiber"],
+datasets:[{
+label:"Nutrition Values",
+data:[protein,carbs,fats,sugar,fiber],
+backgroundColor:[
+"green",
+"blue",
+"orange",
+"red",
+"purple"
+]
+}]
+}
+});
+</script>
+
+
+
+<br><br>
+
+<a href="/food">
+<button>Analyze Another Food</button>
+</a>
+
+</body>
+</html>
+
+
+

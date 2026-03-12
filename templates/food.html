@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart AI Food Advisor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Poppins', sans-serif;
+background:linear-gradient(135deg,#74ebd5,#ACB6E5);
+margin:0;
+padding:0;
+text-align:center;
+}
+
+h1{
+margin-top:20px;
+color:#2c3e50;
+}
+
+.card{
+background:white;
+width:60%;
+margin:20px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+input,select{
+padding:8px;
+border-radius:6px;
+border:1px solid #ccc;
+margin:5px;
+}
+
+button{
+padding:10px 20px;
+background:#27ae60;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#219150;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Smart AI Food Advisor</h1>
+
+<div class="card">
+
+<h2>Your BMI Result</h2>
+
+<p>BMI: <b>{{bmi}}</b></p>
+
+<p>Status:
+<span style="color:red;font-weight:bold;">
+{{status}}
+</span>
+</p>
+
+<h3>Daily Calorie Recommendation</h3>
+
+<p>Estimated Calories: <b>{{daily_calories}} kcal</b></p>
+
+<p>{{calorie_advice}}</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Enter Food Intake</h2>
+
+<form id="foodForm" action="/analyze" method="post">
+
+<input type="hidden" name="status" value="{{status}}">
+<input type="hidden" id="imagePath" name="image_path">
+
+Food 1:
+<input type="text" name="food1">
+
+Quantity:
+<input type="number" name="qty1" step="any">
+
+<select name="unit1">
+<option value="grams">grams</option>
+<option value="count">count</option>
+</select>
+
+<br><br>
+
+Food 2:
+<input type="text" name="food2">
+
+Quantity:
+<input type="number" name="qty2" step="any">
+
+<select name="unit2">
+<option value="grams">grams</option>
+<option value="count">count</option>
+</select>
+
+<br><br>
+
+Food 3:
+<input type="text" name="food3">
+
+Quantity:
+<input type="number" name="qty3" step="any">
+
+<select name="unit3">
+<option value="grams">grams</option>
+<option value="count">count</option>
+</select>
+
+<br><br>
+
+<button type="submit">Analyze Nutrition</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<h2>AI Nutrition Assistant</h2>
+
+<input type="text" id="userMessage" placeholder="Ask about nutrition">
+
+<button onclick="sendMessage()">Ask</button>
+
+<button onclick="startVoice()">🎤</button>
+
+<p id="botReply"></p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Take Food Photo</h2>
+
+<video id="camera" width="320" height="240" autoplay></video>
+
+<br><br>
+
+<button onclick="startCamera()">Start Camera</button>
+<button onclick="takePhoto()">Capture</button>
+<button onclick="stopCamera()">Stop Camera</button>
+
+<br><br>
+
+<canvas id="photoCanvas" width="320" height="240"></canvas>
+
+</div>
+
+
+<div class="card">
+
+<h2>Upload Food Image</h2>
+
+<input type="file" id="foodImage" onchange="detectFood()">
+
+<br><br>
+
+<button onclick="detectFood()">Detect Food</button>
+
+<p id="foodResult"></p>
+
+</div>
+
+<script>
+
+/* AI CHATBOT */
+
+async function sendMessage(){
+
+let message = document.getElementById("userMessage").value;
+
+let response = await fetch("/chatbot",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body: JSON.stringify({message:message})
+});
+
+let data = await response.json();
+
+document.getElementById("botReply").innerText = data.reply;
+
+}
+
+/* VOICE INPUT */
+
+function startVoice(){
+
+const recognition = new webkitSpeechRecognition();
+
+recognition.onresult = function(event){
+
+let text = event.results[0][0].transcript;
+
+document.getElementById("userMessage").value = text;
+
+};
+
+recognition.start();
+
+}
+
+/* CAMERA */
+
+let video = document.getElementById("camera");
+let canvas = document.getElementById("photoCanvas");
+let context = canvas.getContext("2d");
+let stream = null;
+
+async function startCamera(){
+
+stream = await navigator.mediaDevices.getUserMedia({video:true});
+video.srcObject = stream;
+
+}
+
+function takePhoto(){
+
+context.drawImage(video,0,0,320,240);
+
+document.getElementsByName("food1")[0].value = "apple";
+document.getElementsByName("qty1")[0].value = 100;
+
+document.getElementById("foodForm").submit();
+
+}
+
+/* IMAGE UPLOAD */
+
+async function detectFood(){
+
+let file = document.getElementById("foodImage").files[0];
+
+if(!file){
+alert("Please select an image");
+return;
+}
+
+let formData = new FormData();
+formData.append("file", file);
+
+let response = await fetch("/predict-food",{
+method:"POST",
+body: formData
+});
+
+let data = await response.json();
+
+document.getElementById("foodResult").innerText =
+"Detected Food: " + data.food;
+
+document.getElementsByName("food1")[0].value = data.food;
+document.getElementsByName("qty1")[0].value = 100;
+
+document.getElementById("imagePath").value = data.image;
+
+document.getElementById("foodForm").submit();
+
+}
+
+</script>
+
+</body>
+</html>

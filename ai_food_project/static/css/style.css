@@ -1,0 +1,73 @@
+body{
+margin:0;
+font-family:Arial;
+background:#1f2637;
+color:white;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+}
+
+.nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-size:18px;
+}
+
+.main{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:80px;
+}
+
+.text{
+width:50%;
+}
+
+.text h1{
+font-size:45px;
+}
+
+.text p{
+font-size:18px;
+color:#cccccc;
+}
+
+.start-btn{
+margin-top:30px;
+padding:15px 30px;
+background:#34c759;
+border:none;
+border-radius:25px;
+font-size:18px;
+color:white;
+cursor:pointer;
+}
+
+.image{
+width:40%;
+}
+
+#foodImageMove{
+width:100%;
+border-radius:20px;
+box-shadow:0 25px 50px rgba(0,0,0,0.6);
+animation: floatFood 3s ease-in-out infinite;
+}
+
+@keyframes floatFood{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-30px);}
+100%{transform:translateY(0px);}
+}

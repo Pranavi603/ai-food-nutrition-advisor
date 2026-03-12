@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Health Details</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+<div class="login-container">
+
+<h1>User Health Details</h1>
+
+<form action="/food" method="get">
+
+<label>Age</label>
+<br>
+<input type="number" name="age" required>
+
+<br><br>
+
+<label>Weight (kg)</label>
+<br>
+<input type="number" name="weight" step="any" required>
+
+<br><br>
+
+<label>Height (ft)</label>
+<br>
+<input type="number" name="height" step="any" required>
+
+<br><br>
+
+<label>Disease</label>
+<br>
+
+<select name="disease">
+
+<option value="None">None</option>
+<option value="Diabetes">Diabetes</option>
+<option value="Heart Disease">Heart Disease</option>
+<option value="Obesity">Obesity</option>
+
+</select>
+
+<br><br>
+
+<button type="submit">Next</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
